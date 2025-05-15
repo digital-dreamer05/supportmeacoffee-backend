@@ -1,11 +1,15 @@
-const app = require("./app");
 const mongoose = require("mongoose");
+const path = require("path");
 const dotenv = require("dotenv");
+const app = require("./app");
 
 dotenv.config({ path: "./config.env" });
 
 const port = process.env.PORT || 4002;
 const dbUrl = process.env.DATABASE_LOCAL;
+
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
 
 process.on("uncaughtException", (err) => {
   console.log("UNCAUGHT EXCEPTION! 💥 Shutting down...");
