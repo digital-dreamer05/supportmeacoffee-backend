@@ -1,8 +1,8 @@
 {
-  "name": "coffee",
+  "name": "coffee-project",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "A coffee donation project",
+  "main": "server.js",
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js",
@@ -21,7 +21,17 @@
   },
   "homepage": "https://github.com/digital-dreamer05/coffee#readme",
   "dependencies": {
-    "dotenv": "^16.5.0",
-    "express": "^5.1.0"
+    "express": "^4.18.2",
+    "mongoose": "^7.0.0",
+    "dotenv": "^16.0.3",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.0",
+    "nodemailer": "^6.9.1",
+    "express-rate-limit": "^6.7.0",
+    "helmet": "^6.0.1",
+    "cors": "^2.8.5"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
   }
 }
