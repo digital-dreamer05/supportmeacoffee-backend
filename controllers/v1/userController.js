@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
-const User = require("../models/userModel");
-const { sendWelcomeEmail } = require("../utils/email");
+const User = require("../../models/userModel");
+const { sendWelcomeEmail } = require("../../utils/email");
 
 // JWT
 const signToken = (id) => {

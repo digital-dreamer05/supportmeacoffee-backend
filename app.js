@@ -21,7 +21,7 @@ app.use(express.json({ limit: "10kb" }));
 app.use(express.urlencoded({ extended: true, limit: "10kb" }));
 
 app.get("/", (req, res) => {
-  res.send("Hello World");
+  res.render("home");
 });
 
 // ROUTES

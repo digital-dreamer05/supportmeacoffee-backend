@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="fa">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Backend در حال جوشیدن...</title>
+    <style>
+      body {
+        background: #0f2027; /* fallback for old browsers */
+        background: linear-gradient(to right, #2c5364, #203a43, #0f2027);
+        color: #fff;
+        font-family: "Comic Sans MS", cursive, sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        overflow: hidden;
+      }
+
+      .pot {
+        width: 200px;
+        height: 150px;
+        background: #444;
+        border-radius: 0 0 100px 100px;
+        position: relative;
+        margin-bottom: 30px;
+        box-shadow: inset 0 20px 20px rgba(0, 0, 0, 0.5);
+      }
+
+      .steam {
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        background: rgba(255, 255, 255, 0.7);
+        top: -30px;
+        left: 50%;
+        border-radius: 50%;
+        animation: steam 2s infinite ease-in-out;
+      }
+
+      .steam:nth-child(2) {
+        left: 40%;
+        animation-delay: 0.5s;
+      }
+
+      .steam:nth-child(3) {
+        left: 60%;
+        animation-delay: 1s;
+      }
+
+      @keyframes steam {
+        0% {
+          transform: translateX(0) translateY(0) scale(1);
+          opacity: 0.8;
+        }
+        50% {
+          transform: translateX(-10px) translateY(-50px) scale(1.5);
+          opacity: 0.5;
+        }
+        100% {
+          transform: translateX(10px) translateY(-100px) scale(0.5);
+          opacity: 0;
+        }
+      }
+
+      h1 {
+        font-size: 2.5rem;
+        text-shadow: 2px 2px 5px #000;
+        margin-bottom: 10px;
+      }
+
+      p {
+        font-size: 1.2rem;
+        opacity: 0.8;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="pot">
+      <div class="steam"></div>
+      <div class="steam"></div>
+      <div class="steam"></div>
+    </div>
+    <h1>🍲 ...Backend در حال جوشیدن</h1>
+    <p>!...داریم بک اند رو با عشق می‌پزیم یه قهوه بگیر و برگرد</p>
+  </body>
+</html>

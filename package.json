@@ -21,15 +21,16 @@
   },
   "homepage": "https://github.com/digital-dreamer05/coffee#readme",
   "dependencies": {
-    "express": "^4.18.2",
-    "mongoose": "^7.0.0",
-    "dotenv": "^16.0.3",
     "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "ejs": "^3.1.10",
+    "express": "^4.18.2",
+    "express-rate-limit": "^6.11.2",
+    "helmet": "^6.2.0",
     "jsonwebtoken": "^9.0.0",
-    "nodemailer": "^6.9.1",
-    "express-rate-limit": "^6.7.0",
-    "helmet": "^6.0.1",
-    "cors": "^2.8.5"
+    "mongoose": "^7.0.0",
+    "nodemailer": "^6.9.1"
   },
   "devDependencies": {
     "nodemon": "^2.0.22"
