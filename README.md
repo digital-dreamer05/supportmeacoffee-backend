@@ -55,7 +55,7 @@ npm install
 
 3. Environment Setup:
 
-   - Create a `config.env` file in the `config` directory
+   - Create a `config.env` file in the root!
    - Configure the following variables:
      ```
      NODE_ENV=development
