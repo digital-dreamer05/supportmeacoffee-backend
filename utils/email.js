@@ -55,4 +55,26 @@ class Email {
   }
 }
 
-module.exports = Email;
+const sendVerificationEmail = async (email, code) => {
+  const transporter = nodemailer.createTransport({
+    service: "Gmail",
+    auth: {
+      user: process.env.EMAIL_USERNAME,
+      pass: process.env.EMAIL_PASSWORD,
+    },
+  });
+
+  const mailOptions = {
+    from: '"support me a coffee" <yourapp@example.com>',
+    to: email,
+    subject: "Verify your email",
+    html: `<p>Your verification code is: <b>${code}</b></p>`,
+  };
+
+  await transporter.sendMail(mailOptions);
+};
+
+module.exports = {
+  Email,
+  sendVerificationEmail,
+};
