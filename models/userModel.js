@@ -1,49 +1,35 @@
 const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs");
 
 const userSchema = new mongoose.Schema({
-  name: {
+  username: { type: String, unique: true, sparse: true },
+  email: { type: String, unique: true, sparse: true },
+  password: { type: String },
+  oauthProvider: {
     type: String,
-    required: [true, "لطفا نام خود را وارد کنید"],
-    trim: true,
+    enum: ["google", "facebook", "twitter", "apple"],
+    default: undefined,
   },
-  email: {
+  oauthId: { type: String, default: null },
+
+  displayName: { type: String },
+  bio: { type: String },
+  profileImage: { type: String },
+  socialLinks: {
     type: String,
-    required: [true, "لطفا ایمیل خود را وارد کنید"],
-    unique: true,
-    lowercase: true,
-    trim: true,
   },
-  password: {
-    type: String,
-    required: [true, "لطفا رمز عبور خود را وارد کنید"],
-    minlength: 8,
-    select: false,
+
+  isEmailVerified: { type: Boolean, default: false },
+
+  emailVerificationCode: { type: String },
+  emailVerificationExpires: { type: Date },
+
+  payment: {
+    country: String,
+    bankInfo: String,
+    isSetup: { type: Boolean, default: false },
   },
-  role: {
-    type: String,
-    enum: ["user", "admin"],
-    default: "user",
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
+
+  createdAt: { type: Date, default: Date.now },
 });
 
-userSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) return next();
-  this.password = await bcrypt.hash(this.password, 12);
-  next();
-});
-
-userSchema.methods.correctPassword = async function (
-  candidatePassword,
-  userPassword
-) {
-  return await bcrypt.compare(candidatePassword, userPassword);
-};
-
-const User = mongoose.model("User", userSchema);
-
-module.exports = User;
+module.exports = mongoose.model("User", userSchema);

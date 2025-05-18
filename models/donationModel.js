@@ -6,11 +6,6 @@ const donationSchema = new mongoose.Schema({
     ref: "User",
     required: [true, "اهدای قهوه باید متعلق به یک کاربر باشد"],
   },
-  coffeeType: {
-    type: String,
-    required: [true, "لطفا نوع قهوه را مشخص کنید"],
-    enum: ["اسپرسو", "کاپوچینو", "لاته", "آمریکانو", "ترک"],
-  },
   quantity: {
     type: Number,
     required: [true, "لطفا تعداد قهوه را مشخص کنید"],
