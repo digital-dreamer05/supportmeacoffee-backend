@@ -3,7 +3,7 @@ const path = require("path");
 const dotenv = require("dotenv");
 const app = require("./app");
 
-dotenv.config({ path: "./config.env" });
+dotenv.config({ path: "./.env" });
 
 const port = process.env.PORT || 4002;
 const dbUrl = process.env.DATABASE_LOCAL;
