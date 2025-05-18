@@ -1,69 +1,27 @@
-const jwt = require("jsonwebtoken");
 const User = require("../../models/userModel");
-const { sendWelcomeEmail } = require("../../utils/email");
 
-// JWT
-const signToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRES_IN,
-  });
-};
+exports.completeProfile = async (req, res) => {
+  const userId = req.user?._id; // فرض بر اینکه از middleware احراز هویت JWT استفاده می‌کنی
 
-const createSendToken = (user, statusCode, res) => {
-  const token = signToken(user._id);
-
-  user.password = undefined;
-
-  res.status(statusCode).json({
-    status: "success",
-    token,
-    data: { user },
-  });
-};
-
-exports.register = async (req, res, next) => {
-  try {
-    const newUser = await User.create({
-      name: req.body.name,
-      email: req.body.email,
-      password: req.body.password,
-    });
-
-    await sendWelcomeEmail(newUser.email, newUser.name);
-
-    createSendToken(newUser, 201, res);
-  } catch (err) {
-    next(err);
+  if (!userId) {
+    return res.status(401).json({ message: "Unauthorized" });
   }
-};
 
-exports.login = async (req, res, next) => {
+  const { name, bio, socialLinks, profileImage } = req.body;
+
   try {
-    const { email, password } = req.body;
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ message: "User not found" });
 
-    if (!email || !password) {
-      return next(new Error("لطفا ایمیل و پسورد خود را وارد کنید"));
-    }
+    user.name = name || user.name;
+    user.bio = bio || user.bio;
+    user.socialLinks = socialLinks || user.socialLinks;
+    user.profileImage = profileImage || user.profileImage;
 
-    const user = await User.findOne({ email }).select("+password");
-    if (!user || !(await user.correctPassword(password, user.password))) {
-      return next(new Error("ایمیل یا پسورد اشتباه است"));
-    }
+    await user.save();
 
-    createSendToken(user, 200, res);
+    res.status(200).json({ message: "Profile updated successfully", user });
   } catch (err) {
-    next(err);
-  }
-};
-
-exports.getMe = async (req, res, next) => {
-  try {
-    const user = await User.findById(req.user.id);
-    res.status(200).json({
-      status: "success",
-      data: { user },
-    });
-  } catch (err) {
-    next(err);
+    res.status(500).json({ message: "Error updating profile", error: err });
   }
 };
