@@ -52,7 +52,6 @@ exports.getMyDonations = async (req, res, next) => {
   }
 };
 
-// به‌روزرسانی وضعیت اهدا
 exports.updateDonationStatus = async (req, res, next) => {
   try {
     const donation = await Donation.findByIdAndUpdate(
