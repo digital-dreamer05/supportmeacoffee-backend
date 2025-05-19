@@ -35,6 +35,8 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use("/uploads", express.static("uploads"));
+
 app.get("/", (req, res) => {
   res.render("home");
 });
