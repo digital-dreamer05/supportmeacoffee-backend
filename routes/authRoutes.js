@@ -2,6 +2,7 @@ const express = require("express");
 require("../config/passport");
 const passport = require("passport");
 const authController = require("../controllers/v1/authController");
+const generateToken = require("../middlewares/authMiddleware");
 
 const router = express.Router();
 
@@ -30,25 +31,13 @@ router.get(
     failureRedirect: "/api/auth/google/failure",
     session: false,
   }),
-  async (req, res) => {
-    const username = req.session.username;
-
-    const existing = await User.findOne({ username });
-    if (existing) {
-      return res.status(409).json({
-        status: "error",
-        message: "Username already taken",
-      });
-    }
-
-    req.user.username = username;
-    await req.user.save();
-
-    req.session.username = null;
+  (req, res) => {
+    const token = generateToken(req.user);
 
     res.json({
       message: "Google login successful",
       user: req.user,
+      token,
     });
   }
 );
