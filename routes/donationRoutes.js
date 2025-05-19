@@ -4,12 +4,12 @@ const authMiddleware = require("../middlewares/authMiddleware");
 
 const router = express.Router();
 
-router.use(authMiddleware.protect);
+// router.use(authMiddleware.protect);
 
 router.post("/", donationController.createDonation);
 router.get("/my-donations", donationController.getMyDonations);
 
-router.use(authMiddleware.restrictTo("admin"));
+// router.use(authMiddleware.restrictTo("admin"));
 router.get("/", donationController.getAllDonations);
 router.patch("/:id/status", donationController.updateDonationStatus);
 
