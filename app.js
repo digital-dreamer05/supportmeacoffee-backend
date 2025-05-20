@@ -9,6 +9,7 @@ const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
 const donationRoutes = require("./routes/donationRoutes");
 const globalErrorHandler = require("./controllers/v1/errorController");
+const feedbackRoutes = require("./routes/feedbackRouter");
 
 const app = express();
 
@@ -45,6 +46,7 @@ app.get("/", (req, res) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/donations", donationRoutes);
+app.use("/api/feedback", feedbackRoutes);
 
 // Global error handler (must be last)
 app.use(globalErrorHandler);
