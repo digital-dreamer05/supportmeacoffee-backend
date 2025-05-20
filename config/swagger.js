@@ -4,17 +4,15 @@ const YAML = require("yaml");
 const fs = require("fs");
 const path = require("path");
 
-// خواندن فایل swagger.yaml
 const swaggerYaml = fs.readFileSync(
   path.join(__dirname, "../swagger.yaml"),
   "utf8"
 );
 const swaggerDocument = YAML.parse(swaggerYaml);
 
-// تنظیمات Swagger
 const options = {
   definition: swaggerDocument,
-  apis: ["./routes/*.js"], // مسیر فایل‌های روت
+  apis: ["./routes/*.js"],
 };
 
 const specs = swaggerJsdoc(options);
@@ -25,6 +23,7 @@ module.exports = {
     explorer: true,
     customCss: ".swagger-ui .topbar { display: none }",
     customSiteTitle: "API Documentation",
-    customfavIcon: "/favicon.ico",
+    customfavIcon:
+      "https://cdn.jsdelivr.net/gh/swagger-api/swagger-ui@v4.15.5/dist/favicon-32x32.png",
   }),
 };
