@@ -4,6 +4,7 @@ const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
 const passport = require("passport");
 require("./config/passport");
+const swaggerConfig = require("./config/swagger");
 
 const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
@@ -37,6 +38,9 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use("/uploads", express.static("uploads"));
+
+// Swagger Documentation
+app.use("/api-docs", swaggerConfig.serve, swaggerConfig.setup);
 
 app.get("/", (req, res) => {
   res.render("home");
