@@ -31,9 +31,35 @@ components:
       properties:
         id:
           type: string
-        message:
+        rating:
+          type: number
+          minimum: 1
+          maximum: 10
+          description: امتیاز از 1 تا 10
+        unresolvedProblem:
           type: string
+          description: مشکلات حل نشده
+        dashboardFrequency:
+          type: string
+          enum: ["هر روز", "هفتگی", "ماهانه", "به ندرت", "اصلا"]
+          description: تناوب استفاده از داشبورد
+        featureSuggestions:
+          type: string
+          description: پیشنهادات برای قابلیت‌های جدید
+        username:
+          type: string
+          description: نام کاربری
+        email:
+          type: string
+          format: email
+          description: ایمیل کاربر
+        fullName:
+          type: string
+          description: نام کامل کاربر
         createdAt:
+          type: string
+          format: date-time
+        updatedAt:
           type: string
           format: date-time
     Donation:
@@ -216,18 +242,62 @@ paths:
             schema:
               type: object
               required:
-                - message
+                - rating
+                - dashboardFrequency
+                - username
+                - email
+                - fullName
               properties:
-                message:
+                rating:
+                  type: number
+                  minimum: 1
+                  maximum: 10
+                  description: امتیاز از 1 تا 10
+                unresolvedProblem:
                   type: string
-                  minLength: 10
+                  description: مشکلات حل نشده
+                dashboardFrequency:
+                  type: string
+                  enum: ["هر روز", "هفتگی", "ماهانه", "به ندرت", "اصلا"]
+                  description: تناوب استفاده از داشبورد
+                featureSuggestions:
+                  type: string
+                  description: پیشنهادات برای قابلیت‌های جدید
+                username:
+                  type: string
+                  description: نام کاربری
+                email:
+                  type: string
+                  format: email
+                  description: ایمیل کاربر
+                fullName:
+                  type: string
+                  description: نام کامل کاربر
       responses:
         "201":
           description: Feedback submitted successfully
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Feedback"
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "فیدبک با موفقیت ثبت شد"
+                  feedback:
+                    $ref: "#/components/schemas/Feedback"
+        "400":
+          description: Invalid input data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "خطا در ثبت فیدبک"
+                  error:
+                    type: string
 
     get:
       tags:
@@ -242,6 +312,18 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Feedback"
+        "500":
+          description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "خطا در دریافت فیدبک‌ها"
+                  error:
+                    type: string
 
   /donation:
     post:
