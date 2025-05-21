@@ -7,13 +7,16 @@ exports.checkUsername = async (req, res) => {
   const { username } = req.body;
 
   if (!username) {
-    return res.status(400).json({ message: "Username is required" });
+    return res.status(400).json({
+      isAvailable: false,
+      message: "Username is required",
+    });
   }
 
   const usernameRegex = /^[a-zA-Z0-9.]+$/;
   if (!usernameRegex.test(username)) {
     return res.status(400).json({
-      success: false,
+      isAvailable: false,
       message: "Username can only contain letters, numbers, and periods",
       allowedChars: "a-z, A-Z, 0-9, .",
     });
@@ -21,17 +24,23 @@ exports.checkUsername = async (req, res) => {
 
   if (username.length < 3 || username.length > 20) {
     return res.status(400).json({
-      success: false,
+      isAvailable: false,
       message: "Username must be between 3-20 characters",
     });
   }
 
   const exists = await User.findOne({ username });
   if (exists) {
-    return res.status(409).json({ message: "Username is already taken" });
+    return res.status(409).json({
+      isAvailable: false,
+      message: "Username is already taken",
+    });
   }
 
-  return res.status(200).json({ message: "Username is available" });
+  return res.status(200).json({
+    isAvailable: true,
+    message: "Username is available",
+  });
 };
 
 exports.register = async (req, res) => {
