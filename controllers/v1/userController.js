@@ -1,11 +1,14 @@
 const User = require("../../models/userModel");
+const messages = require("../../utils/messages/fa");
 
 exports.completeProfile = async (req, res) => {
   const { fullName, bio, website, socialLink } = req.body;
 
   try {
     const user = await User.findById(req.user.id).select("-password");
-    if (!user) return res.status(404).json({ message: "User not found" });
+    if (!user) {
+      return res.status(404).json({ message: messages.user.not_found });
+    }
 
     user.fullName = fullName || user.fullName;
     user.bio = bio || user.bio;
@@ -19,12 +22,12 @@ exports.completeProfile = async (req, res) => {
     await user.save();
 
     res.status(200).json({
-      message: "Profile updated successfully",
+      message: messages.user.profile_updated,
       user,
       redirectTo: "/dashboard",
     });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ message: messages.common.server_error });
   }
 };

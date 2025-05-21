@@ -1,13 +1,18 @@
 const Feedback = require("../../models/feedbackModel");
+const messages = require("../../utils/messages/fa");
 
 exports.submitFeedback = async (req, res) => {
   try {
     const feedback = new Feedback(req.body);
     await feedback.save();
-    res.status(201).json({ message: "فیدبک با موفقیت ثبت شد", feedback });
+    res
+      .status(201)
+      .json({ message: messages.feedback.submit_success, feedback });
   } catch (err) {
-    console.error("خطا در ذخیره فیدبک:", err);
-    res.status(400).json({ message: "خطا در ثبت فیدبک", error: err.message });
+    console.error("Error saving feedback:", err);
+    res
+      .status(400)
+      .json({ message: messages.feedback.submit_error, error: err.message });
   }
 };
 
@@ -16,9 +21,9 @@ exports.getAllFeedbacks = async (req, res) => {
     const feedbacks = await Feedback.find().sort({ createdAt: -1 });
     res.status(200).json(feedbacks);
   } catch (err) {
-    console.error("خطا در دریافت فیدبک‌ها:", err);
+    console.error("Error fetching feedbacks:", err);
     res
       .status(500)
-      .json({ message: "خطا در دریافت فیدبک‌ها", error: err.message });
+      .json({ message: messages.feedback.fetch_error, error: err.message });
   }
 };
