@@ -19,8 +19,16 @@ process.on("uncaughtException", (err) => {
 
 (async () => {
   try {
-    await mongoose.connect(dbUrl);
-    console.log("MongoDB Connected :)");
+    // await mongoose.connect(dbUrl);
+    // console.log("MongoDB Connected :)");
+
+    mongoose
+      .connect(process.env.MONGO_URI, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      })
+      .then(() => console.log("Connected to MongoDB Atlas 💾"))
+      .catch((err) => console.error("DB connection error ❌:", err));
 
     const server = app.listen(port, () => {
       console.log(`Server running on port ${port}...`);
