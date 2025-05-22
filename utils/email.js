@@ -65,10 +65,33 @@ const sendVerificationEmail = async (email, code) => {
   });
 
   const mailOptions = {
-    from: '"support me a coffee" <yourapp@example.com>',
+    from: '"Support Me A Coffee ☕" <support@yourapp.com>',
     to: email,
-    subject: "Verify your email",
-    html: `<p>Your verification code is: <b>${code}</b></p>`,
+    subject: "☕ !کدت رو بگیر و بیا قهوه‌تو بخور",
+    html: `
+      <div style="font-family: 'Comic Sans MS', Arial, sans-serif; background-color: #fffaf3; padding: 30px; border-radius: 12px; border: 1px solid #f0e6da; max-width: 600px; margin: auto;">
+        <div style="text-align: center;">
+          <img src="https://cdn-icons-png.flaticon.com/512/924/924514.png" alt="Coffee" width="80" style="margin-bottom: 20px;" />
+          <h2 style="color: #6f4e37;">☕یه قدم مونده تا قهوه‌ت </h2>
+        </div>
+
+        <p style="font-size: 16px; color: #444;">،سلام دوست خوش‌ذوق</p>
+        <p style="font-size: 15px; color: #444;">:کدت آماده‌ست! فقط کافیه کپی‌ش کنی و بزنی تو سایت</p>
+
+        <div style="text-align: center; margin: 30px 0;">
+          <span style="display: inline-block; background-color: #fff3cd; padding: 15px 25px; font-size: 24px; border-radius: 10px; font-weight: bold; color: #856404; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+            ${code}
+          </span>
+        </div>
+
+        <p style="font-size: 15px; color: #666;"> 🕒 ! لطفاً این کد رو توی ۱۰ دقیقه وارد کن که قهوه‌مون هنوز گرمه</p>
+        <p style="font-size: 14px; color: #888;">😅اگه این ایمیل اشتباهی برات اومده، بی‌خیالش شو </p>
+
+        <div style="text-align: center; margin-top: 40px;">
+          <p style="font-size: 14px; color: #aaa;">☕با عشق ❤️ و قهوه <br>Support Me A Coffee تیم </p>
+        </div>
+      </div>
+    `,
   };
 
   await transporter.sendMail(mailOptions);
