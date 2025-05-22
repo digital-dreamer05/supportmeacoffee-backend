@@ -1,8 +1,8 @@
-const User = require("../../models/userModel");
-const bcrypt = require("bcryptjs");
-const { sendVerificationEmail } = require("../../utils/email");
+const User = require('../../models/userModel');
+const bcrypt = require('bcryptjs');
+const { sendVerificationEmail } = require('../../utils/email');
 // const generateToken = require("../../utils/generateToken");
-const messages = require("../../utils/messages/fa");
+const messages = require('../../utils/messages/fa');
 
 exports.checkUsername = async (req, res) => {
   const { username } = req.body;
@@ -19,7 +19,7 @@ exports.checkUsername = async (req, res) => {
     return res.status(400).json({
       isAvailable: false,
       message: messages.auth.username_invalid,
-      allowedChars: "a-z, A-Z, 0-9, .",
+      allowedChars: 'a-z, A-Z, 0-9, .',
     });
   }
 
@@ -113,21 +113,27 @@ exports.verifyEmailCode = async (req, res) => {
 exports.login = async (req, res) => {
   const { email, password } = req.body;
 
+  if (!email || !password)
+    return res
+      .status(400)
+      .json({ message: messages.auth.email_username_required });
+
   const user = await User.findOne({ email });
-  if (!user) {
-    return res.status(404).json({ message: messages.auth.user_not_found });
-  }
+  if (!user)
+    return res
+      .status(404)
+      .json({ message: messages.auth.user_email_not_found });
 
   const isMatch = await bcrypt.compare(password, user.password);
-  if (!isMatch) {
+  if (!isMatch)
     return res.status(401).json({ message: messages.auth.login_failed });
-  }
 
-  if (!user.isEmailVerified) {
+  if (!user.isEmailVerified)
     return res.status(403).json({ message: messages.auth.email_not_verified });
-  }
 
-  const token = generateToken(user);
+  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+    expiresIn: '7d',
+  });
 
   res.status(200).json({
     message: messages.auth.login_success,
