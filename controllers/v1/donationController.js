@@ -1,74 +1,45 @@
-const Donation = require("../../models/donationModel");
-const { sendDonationEmail } = require("../../utils/email");
+const Donation = require('../../models/donationModel');
+const User = require('../../models/userModel');
+const messages = require('../../utils/messages/fa');
 
-exports.createDonation = async (req, res, next) => {
+exports.createDonation = async (req, res) => {
   try {
-    const donation = await Donation.create({
-      user: req.user.id,
-      coffeeType: req.body.coffeeType,
-      quantity: req.body.quantity,
-      message: req.body.message,
-    });
+    const { username } = req.params;
+    const {
+      numberOfCoffees,
+      supporterNameOrLink = '',
+      message = '',
+    } = req.body;
 
-    await sendDonationEmail(req.user.email, req.user.name, donation);
-
-    res.status(201).json({
-      status: "success",
-      data: { donation },
-    });
-  } catch (err) {
-    next(err);
-  }
-};
-
-exports.getAllDonations = async (req, res, next) => {
-  try {
-    const donations = await Donation.find().populate({
-      path: "user",
-      select: "name email",
-    });
-
-    res.status(200).json({
-      status: "success",
-      results: donations.length,
-      data: { donations },
-    });
-  } catch (err) {
-    next(err);
-  }
-};
-
-exports.getMyDonations = async (req, res, next) => {
-  try {
-    const donations = await Donation.find({ user: req.user.id });
-
-    res.status(200).json({
-      status: "success",
-      results: donations.length,
-      data: { donations },
-    });
-  } catch (err) {
-    next(err);
-  }
-};
-
-exports.updateDonationStatus = async (req, res, next) => {
-  try {
-    const donation = await Donation.findByIdAndUpdate(
-      req.params.id,
-      { status: req.body.status },
-      { new: true, runValidators: true }
-    );
-
-    if (!donation) {
-      return next(new Error("اهدای مورد نظر یافت نشد"));
+    if (!numberOfCoffees || numberOfCoffees < 1) {
+      return res
+        .status(400)
+        .json({ message: messages.donation.number_coffees });
     }
 
-    res.status(200).json({
-      status: "success",
-      data: { donation },
+    const creator = await User.findOne({ username });
+    if (!creator) {
+      return res.status(404).json({ message: messages.donation.not_found });
+    }
+
+    const coffeePrice = 30000;
+    const totalAmount = numberOfCoffees * coffeePrice;
+
+    const donation = await Donation.create({
+      numberOfCoffees,
+      supporterNameOrLink,
+      message,
+      totalAmount,
+      creator: creator._id,
     });
-  } catch (err) {
-    next(err);
+
+    return res.status(201).json({
+      message: messages.donation.donation_seccess,
+      donationId: donation._id,
+      amount: totalAmount,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: messages.common.server_error });
   }
 };

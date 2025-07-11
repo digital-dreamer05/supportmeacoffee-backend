@@ -33,6 +33,11 @@ const messages = {
     not_found: 'کاربر پیدا نشد',
     profile_updated: 'پروفایل با موفقیت به‌روزرسانی شد',
   },
+  donation: {
+    not_found: 'کاربر دریافت‌کننده پیدا نشد',
+    donation_seccess: 'درخواست دونیشن با موفقیت ثبت شد',
+    number_coffees: 'حداقل یک قهوه باید انتخاب شود',
+  },
 
   common: {
     server_error: 'خطای سرور رخ داده است',

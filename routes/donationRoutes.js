@@ -1,16 +1,7 @@
-const express = require("express");
-const donationController = require("../controllers/v1/donationController");
-const authMiddleware = require("../middlewares/authMiddleware");
-
+const express = require('express');
 const router = express.Router();
+const donationController = require('../controllers/v1/donationController');
 
-// router.use(authMiddleware.protect);
-
-router.post("/", donationController.createDonation);
-router.get("/my-donations", donationController.getMyDonations);
-
-// router.use(authMiddleware.restrictTo("admin"));
-router.get("/", donationController.getAllDonations);
-router.patch("/:id/status", donationController.updateDonationStatus);
+router.post('/:username', donationController.createDonation);
 
 module.exports = router;
