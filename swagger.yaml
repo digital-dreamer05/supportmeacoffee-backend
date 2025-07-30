@@ -77,6 +77,29 @@ components:
         createdAt:
           type: string
           format: date-time
+    Faq:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: '64e6e8e8f0b1e65fc1a8f9a1'
+        question:
+          type: string
+          example: 'What is your refund policy?'
+        answer:
+          type: string
+          example: 'We do not offer refunds except in exceptional cases.'
+        order:
+          type: number
+          example: 1
+        createdAt:
+          type: string
+          format: date-time
+          example: '2024-01-01T10:30:00.000Z'
+        updatedAt:
+          type: string
+          format: date-time
+          example: '2024-01-02T15:45:00.000Z'
 
 paths:
   /auth/check-username:
@@ -600,3 +623,103 @@ paths:
           description: Forbidden - Admin access required
         '404':
           description: Donation not found
+
+  /faqs:
+    get:
+      tags:
+        - FAQ
+      summary: Get all FAQs
+      responses:
+        '200':
+          description: List of FAQs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Faq'
+        '500':
+          description: Server error
+
+    post:
+      tags:
+        - FAQ
+      summary: Create a new FAQ
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - question
+                - answer
+              properties:
+                question:
+                  type: string
+                  description: The question to be answered
+                answer:
+                  type: string
+                  description: The answer to the question
+                order:
+                  type: number
+                  description: Order of the FAQ (optional)
+      responses:
+        '201':
+          description: FAQ created successfully
+        '400':
+          description: Bad request (invalid input)
+
+  /faqs/{id}:
+    patch:
+      tags:
+        - FAQ
+      summary: Update an existing FAQ
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                question:
+                  type: string
+                answer:
+                  type: string
+                order:
+                  type: number
+      responses:
+        '200':
+          description: FAQ updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Faq'
+        '404':
+          description: FAQ not found
+        '500':
+          description: Server error
+
+    delete:
+      tags:
+        - FAQ
+      summary: Delete a specific FAQ
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: FAQ deleted successfully
+        '404':
+          description: FAQ not found
+        '500':
+          description: Server error
