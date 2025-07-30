@@ -11,7 +11,7 @@ const userRoutes = require('./routes/userRoutes');
 const donationRoutes = require('./routes/donationRoutes');
 const globalErrorHandler = require('./controllers/v1/errorController');
 const feedbackRoutes = require('./routes/feedbackRouter');
-
+const faqRoutes = require('./routes/faqRoutes');
 const app = express();
 
 app.use(helmet());
@@ -47,10 +47,14 @@ app.get('/', (req, res) => {
 });
 
 // ROUTES
+
+app.use(express.json());
+
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/donations', donationRoutes);
 app.use('/api/feedback', feedbackRoutes);
+app.use('/api/faqs', faqRoutes);
 
 // Global error handler (must be last)
 app.use(globalErrorHandler);

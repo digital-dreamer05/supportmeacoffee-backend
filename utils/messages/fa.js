@@ -38,6 +38,11 @@ const messages = {
     donation_seccess: 'درخواست دونیشن با موفقیت ثبت شد',
     number_coffees: 'حداقل یک قهوه باید انتخاب شود',
   },
+  faq: {
+    submit_success: 'سوال متداول با موفقیت ثبت شد',
+    not_found: 'سوال مورد نظر پیدا نشد',
+    delete_success: 'سوال متداول با موفقیت حذف شد',
+  },
 
   common: {
     server_error: 'خطای سرور رخ داده است',
